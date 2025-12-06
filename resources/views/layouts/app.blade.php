@@ -10,21 +10,21 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+
     <!-- Font Awesome -->
-<link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    integrity="sha512-bxwQTCqZ7YtCkq9iP+KzrxuQ2SPQXqMrdCGqf0upXqkLpyEIpjVNbcJZmZJzvj0cYcXxQeGFGzRcpB3h5eO3mw=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-/>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    />
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+
 <body class="font-sans antialiased flex flex-col min-h-screen bg-gray-100">
 
-    {{-- Navigation --}}
+    {{-- Navigation bawaan kamu (dashboard tetap aman) --}}
     @include('layouts.navigation')
 
     {{-- Page Header --}}
@@ -38,10 +38,11 @@
 
     {{-- Main Content --}}
     <main class="flex-grow">
+        {{-- Ini slot utama, dashboard tetap pakai ini --}}
         {{ $slot }}
     </main>
 
-    {{-- Footer --}}
+    {{-- Footer bawaan kamu --}}
     @include('layouts.footer')
 
 </body>

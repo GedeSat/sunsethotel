@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('hotel_id')->nullable();
             $table->string('name');
             $table->string('type')->nullable();
-            $table->decimal('price', 12, 2)->default(0);
+            $table->decimal('price', 15, 2)->default(0);
             $table->timestamps();
         });
     }
