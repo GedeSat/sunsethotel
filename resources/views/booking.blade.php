@@ -88,7 +88,7 @@
                             </td>
                             <td class="p-3">{{ $booking->check_in }}</td>
                             <td class="p-3">{{ $booking->check_out }}</td>
-                            <td class="p-3">{{ $booking->total_price }}</td>
+                            <td class="p-3">Rp{{ number_format($booking->total_price, 0, ',', '.') }}</td>
                         </tr>
                         @endforeach
                     </tbody>

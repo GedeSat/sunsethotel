@@ -18,6 +18,12 @@
     <main class=""> {{-- Tambah padding biar tidak ketutup navbar --}}
         @yield('content')
     </main>
+
+    {{-- Sfooter hotel --}}
+    @include('layouts.footer')
+    
+
+
 <script>
     const profileBtn = document.getElementById('profileBtn');
     const dropdown = document.getElementById('dropdownMenu');

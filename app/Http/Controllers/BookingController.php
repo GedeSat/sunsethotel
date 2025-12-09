@@ -30,4 +30,10 @@ class BookingController extends Controller
 
         return back()->with('success', 'Booking berhasil dibuat!');
     }
+
+  public function index()
+{
+    $bookings = Booking::with(['user', 'room'])->latest()->get();
+    return view('admin.adminBooking', compact('bookings'));
+}
 }

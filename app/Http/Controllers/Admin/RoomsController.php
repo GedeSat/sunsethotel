@@ -84,4 +84,9 @@ class RoomsController extends Controller
 
         return redirect('/admin/rooms')->with('success', 'Kamar berhasil dihapus!');
     }
+
+
+    
 }
+
+

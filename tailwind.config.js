@@ -9,6 +9,16 @@ export default {
         './resources/views/**/*.blade.php',
     ],
 
+    safelist: [
+        "fa-brands",
+        "fa-solid",
+        "fa-facebook-f",
+        "fa-twitter",
+        "fa-instagram",
+        "fa-rss",
+        "fa-google-plus-g",
+    ],
+
     theme: {
         extend: {
             fontFamily: {

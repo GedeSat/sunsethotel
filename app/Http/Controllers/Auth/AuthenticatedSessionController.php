@@ -41,7 +41,7 @@ class AuthenticatedSessionController extends Controller
 
     // Redirect admin
     if (Auth::user()->email === 'adminsunset@gmail.com') {
-        return redirect('/admin/dashboard');
+        return redirect('/admin');
     }
 
     // Redirect user biasa
