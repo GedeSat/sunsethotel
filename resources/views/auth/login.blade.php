@@ -1,3 +1,6 @@
+
+
+
 <x-guest-layout>
 
     <style>
@@ -25,7 +28,7 @@
         }
 
         .btn-gradient {
-            background: linear-gradient(90deg,#4c6ef5,#3bc9db);
+            background: linear-gradient(90deg, #4c6ef5, #3bc9db);
             color: white;
             border-radius: 10px;
         }
@@ -54,37 +57,29 @@
                 <!-- Email -->
                 <div>
                     <x-input-label for="email" :value="__('Email Address')" class="text-gray-900" />
-                    <x-text-input id="email"
-                        class="block mt-1 w-full input-style"
-                        type="email" name="email"
-                        :value="old('email')"
-                        placeholder="Email Address"
-                        required autofocus />
+                    <x-text-input id="email" class="block mt-1 w-full input-style" type="email" name="email"
+                        :value="old('email')" placeholder="Email Address" required autofocus />
                     <x-input-error :messages="$errors->get('email')" class="mt-2 text-red-500" />
                 </div>
 
                 <!-- Password -->
                 <div class="mt-4">
                     <x-input-label for="password" :value="__('Password')" class="text-gray-900" />
-                    <x-text-input id="password"
-                        class="block mt-1 w-full input-style"
-                        type="password"
-                        name="password"
-                        placeholder="Password"
-                        required />
+                    <x-text-input id="password" class="block mt-1 w-full input-style" type="password" name="password"
+                        placeholder="Password" required />
                     <x-input-error :messages="$errors->get('password')" class="mt-2 text-red-500" />
                 </div>
 
                 <!-- Remember / Forgot -->
                 <div class="flex items-center justify-between mt-4">
                     <label for="remember_me" class="inline-flex items-center">
-                        <input id="remember_me" type="checkbox" class="rounded border-gray-400 text-indigo-600" name="remember">
+                        <input id="remember_me" type="checkbox" class="rounded border-gray-400 text-indigo-600"
+                            name="remember">
                         <span class="ms-2 text-sm text-gray-700">Remember me</span>
                     </label>
 
                     @if (Route::has('password.request'))
-                        <a class="text-sm text-indigo-600 hover:text-indigo-800"
-                            href="{{ route('password.request') }}">
+                        <a class="text-sm text-indigo-600 hover:text-indigo-800" href="{{ route('password.request') }}">
                             Forgot password?
                         </a>
                     @endif
@@ -103,14 +98,11 @@
                 </div>
 
                 <!-- Social Login Buttons -->
-                <div class="flex gap-3 mb-4">
-                    <button type="button" class="w-1/2 py-2 btn-social">
-                        🌐 Google
-                    </button>
-                    <button type="button" class="w-1/2 py-2 btn-social">
-                        🐱‍💻 GitHub
-                    </button>
-                </div>
+                <button type="button" class="w-full py-2 btn-social flex items-center justify-center gap-2">
+                    <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google" class="w-5 h-5">
+                    <span>Google</span>
+                </button>
+
 
             </form>
 

@@ -23,7 +23,7 @@ Route::get('/', function () {
         'title' => 'Sunset Hotel – Homepage'
     ]);
 });
-Route::get('/about us', function () {
+Route::get('/about-us', function () {
     return view('aboutUs', [
         'title' => 'Sunset Hotel – About Us'
     ]);

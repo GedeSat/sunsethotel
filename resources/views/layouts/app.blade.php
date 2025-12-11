@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,39 +8,84 @@
 
     <title>{{ config('app.name', 'Sunset Hotel') }}</title>
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-    <!-- Font Awesome -->
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css">
 
-    <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans antialiased flex flex-col min-h-screen bg-gray-100">
+<body>
 
-    {{-- Navigation bawaan kamu (dashboard tetap aman) --}}
+  <!-- LOADER OVERLAY -->
+<div id="pageLoader"
+    class="fixed inset-0 bg-white z-[9999] flex items-center justify-center 
+           opacity-100 pointer-events-auto 
+           transition-opacity duration-700">
+
+    <!-- Bola loading -->
+    <div class="flex space-x-2">
+        <div class="w-3 h-3 bg-orange-600 rounded-full animate-bounce"></div>
+        <div class="w-3 h-3 bg-orange-500 rounded-full animate-bounce [animation-delay:0.15s]"></div>
+        <div class="w-3 h-3 bg-orange-400 rounded-full animate-bounce [animation-delay:0.20s]"></div>
+        <div class="w-3 h-3 bg-orange-400 rounded-full animate-bounce [animation-delay:0.25s]"></div>
+    </div>
+
+</div> <!-- WAJIB ADA!! -->
+
+
     @include('layouts.navigation')
 
-    {{-- Page Header --}}
-    @isset($header)
-        <header class="bg-white shadow">
-            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                {{ $header }}
-            </div>
-        </header>
-    @endisset
-
-    {{-- Main Content --}}
-    <main class="flex-grow">
-        {{-- Ini slot utama, dashboard tetap pakai ini --}}
+    <main>
         {{ $slot }}
     </main>
 
-    {{-- Footer bawaan kamu --}}
     @include('layouts.footer')
+
+<script>
+window.addEventListener("load", () => {
+    const loader = qs("#pageLoader");
+
+    // Fade-out saat semua halaman selesai load
+    setTimeout(() => {
+        loader.classList.add("opacity-0");
+        setTimeout(() => {
+            loader.style.display = "none";
+        }, 500);
+    }, 900);
+
+    // Loader saat klik link
+    qsa("a.nav-link").forEach(link => {
+        safeOn(link, "click", (e) => {
+            const url = link.getAttribute("href");
+
+            if (!url || url.startsWith("#")) return;
+
+            e.preventDefault();
+
+            loader.style.display = "flex";
+            setTimeout(() => loader.classList.remove("opacity-0"), 10);
+
+            setTimeout(() => {
+                window.location.href = url;
+            }, 350);
+        });
+    });
+
+    // Loader saat submit form
+    qsa("form:not(.no-loader)").forEach(form => {
+        safeOn(form, "submit", () => {
+            loader.style.display = "flex";
+            loader.classList.remove("opacity-0");
+        });
+    });
+
+});
+
+</script>
+
+
 
 </body>
 </html>

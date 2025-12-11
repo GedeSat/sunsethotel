@@ -80,7 +80,8 @@
             <i class="fa-brands fa-instagram"></i>
         </a>
         <a href="#" class="p-2 rounded-full border border-gray-600 hover:bg-gray-200 hover:text-black transition">
-            <i class="fa-solid fa-rss text-lg"></i>
+            <i class="fa-brands fa-whatsapp text-lg"></i>
+
         </a>
     </div>
 

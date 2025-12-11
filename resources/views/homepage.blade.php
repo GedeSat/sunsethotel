@@ -80,7 +80,7 @@
 <script>
 const swiper = new Swiper(".heroSwiper", {
     loop: true,
-    speed: 1200,
+    speed: 500,
     effect: "fade",
     fadeEffect: {
         crossFade: true,

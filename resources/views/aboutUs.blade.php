@@ -157,9 +157,9 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-            <img src="{{ asset('img/hotel-1.jpg') }}" class="w-full h-[350px] object-cover rounded-lg shadow-lg" loading="lazy">
-            <img src="{{ asset('img/hotel-2.jpg') }}" class="w-full h-[350px] object-cover rounded-lg shadow-lg" loading="lazy">
-            <img src="{{ asset('img/hotel-3.jpg') }}" class="w-full h-[350px] object-cover rounded-lg shadow-lg" loading="lazy">
+            <img src="{{ asset('img/kolam.jpg') }}" class="w-full h-[350px] object-cover rounded-lg shadow-lg" loading="lazy">
+            <img src="https://thumbs.dreamstime.com/b/luxurious-bedroom-ocean-view-sunset-341809724.jpg" class="w-full h-[350px] object-cover rounded-lg shadow-lg" loading="lazy">
+            <img src="{{ asset('img/bar.jpg') }}" class="w-full h-[350px] object-cover rounded-lg shadow-lg" loading="lazy">
         </div>
 
     </div>
