@@ -28,9 +28,44 @@ Route::get('/about-us', function () {
         'title' => 'Sunset Hotel – About Us'
     ]);
 });
+Route::get('/contact', function () {
+    return view('contact', [
+        'title' => 'Sunset Hotel – Contact Us'
+    ]);
+})->name('contact');
 
 
-
+//room
+Route::get('/deluxe', function () {
+    return view('room.deluxe', [
+        'title' => 'Sunset Hotel – Room Deluxe'
+    ]);
+})->name('room.deluxe');
+Route::get('/premium', function () {
+    return view('room.premium', [
+        'title' => 'Sunset Hotel – Room Premium'
+    ]);
+})->name('room.premium');
+Route::get('/executive', function () {
+    return view('room.executive', [
+        'title' => 'Sunset Hotel – Room Executive'
+    ]);
+})->name('room.executive');
+Route::get('/golden', function () {
+    return view('room.golden', [
+        'title' => 'Sunset Hotel – Room Golden'
+    ]);
+})->name('room.golden');
+Route::get('/coastal', function () {
+    return view('room.coastal', [
+        'title' => 'Sunset Hotel – Room Coastal'
+    ]);
+})->name('room.coastal');
+Route::get('/imperial', function () {
+    return view('room.imperal', [
+        'title' => 'Sunset Hotel – Room Imperial'
+    ]);
+})->name('room.imperial');
 // --------------------------------------------
 // ADMIN DASHBOARD (PAKAI CONTROLLER)
 // --------------------------------------------
@@ -94,6 +129,7 @@ Route::post('/booking', [BookingController::class, 'book'])
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
 
 
 // --------------------------------------------

@@ -20,7 +20,7 @@
             <a href="/" class="nav-link text-white hover:text-orange-300 px-4 py-2">Home</a>
             <a href="/booking" class="nav-link text-white hover:text-orange-300 px-4 py-2">Booking</a>
             <a href="/about-us" class="nav-link text-white hover:text-orange-300 px-4 py-2">About us</a>
-            <a href="#contact" class="no-loader text-white hover:text-orange-300 px-4 py-2">Contact</a>
+            <a href="{{ route('contact') }}" class="no-loader text-white hover:text-orange-300 px-4 py-2">Contact</a>
         </div>
 
         <!-- AUTH AREA -->

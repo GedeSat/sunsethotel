@@ -6,8 +6,7 @@
         <!-- Logo & Description -->
         <div class="col-span-2 md:col-span-1">
             <div class="flex items-center gap-3 mb-4">
-                <img src="backend/assets/images/rocket.png" alt="Logo" class="h-10">
-                <h1 class="text-lg font-semibold tracking-wide">Sunset Hotel</h1>
+                 <a href="/" class="nav-link text-2xl font-bold text-orange-400">SUNSET HOTEL</a>
             </div>
             <p class="text-gray-400 leading-relaxed text-xs">
                 Experience luxury, comfort, and unforgettable moments at Sunset Hotel & Resort.

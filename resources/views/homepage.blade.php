@@ -27,7 +27,7 @@
     <div class="swiper-slide w-full h-screen relative">
       <img 
         src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1800&q=80"
-        class="absolute inset-0 w-full h-full object-cover object-center brightness-[0.45] -z-10"
+        class="absolute inset-0 w-full h-full object-cover object-center brightness-[0.45] -z-10  "
         preload="auto"
       >
       <div class="flex items-center justify-center h-full">
@@ -111,8 +111,9 @@ const swiper = new Swiper(".heroSwiper", {
             <div class="relative shadow-lg rounded-xl overflow-hidden group">
                 <img 
                     src="{{ asset('img/kamar deluxe.jpeg') }}"
-                    class="w-full h-72 object-cover group-hover:scale-105 transition duration-500"
+                    class="w-full h-72 object-cover group-hover:scale-105 transition duration-500 hover:cursor-pointer"
                 >
+                <a href="{{ route('room.deluxe') }}" class="absolute inset-0"></a>
                 <div class="absolute top-3 left-3 bg-black/80 text-white text-sm px-3 py-1 rounded">
                     From Rp.700k/night
                 </div>
@@ -128,8 +129,9 @@ const swiper = new Swiper(".heroSwiper", {
             <div class="relative shadow-lg rounded-xl overflow-hidden group">
                 <img 
                     src="{{ asset('img/premium suite.jpg') }}"
-                    class="w-full h-72 object-cover group-hover:scale-105 transition duration-500"
+                    class="w-full h-72 object-cover group-hover:scale-105 transition duration-500 hover:cursor-pointer"
                 >
+                <a href="{{ route('room.premium') }}" class="absolute inset-0"></a>
                 <div class="absolute top-3 left-3 bg-black/80 text-white text-sm px-3 py-1 rounded">
                     From Rp.1.000k/night
                 </div>
@@ -145,8 +147,9 @@ const swiper = new Swiper(".heroSwiper", {
             <div class="relative shadow-lg rounded-xl overflow-hidden group">
                 <img 
                     src="{{ asset('img/executive suite.jpg') }}"
-                    class="w-full h-72 object-cover group-hover:scale-105 transition duration-500"
+                    class="w-full h-72 object-cover group-hover:scale-105 transition duration-500 hover:cursor-pointer"
                 >
+                 <a href="{{ route('room.executive') }}" class="absolute inset-0"></a>
                 <div class="absolute top-3 left-3 bg-black/80 text-white text-sm px-3 py-1 rounded">
                     From Rp.1.500k/night
                 </div>
@@ -161,14 +164,15 @@ const swiper = new Swiper(".heroSwiper", {
             {{-- Deluxe Room --}}
             <div class="relative shadow-lg rounded-xl overflow-hidden group">
                 <img 
-                    src="{{ asset('img/kamar deluxe.jpeg') }}"
-                    class="w-full h-72 object-cover group-hover:scale-105 transition duration-500"
+                    src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=1600&q=80"
+                    class="w-full h-72 object-cover group-hover:scale-105 transition duration-500 hover:cursor-pointer"
                 >
+               <a href="{{ route('room.golden') }}" class="absolute inset-0"></a>
                 <div class="absolute top-3 left-3 bg-black/80 text-white text-sm px-3 py-1 rounded">
                     From Rp.700k/night
                 </div>
                 <div class="absolute bottom-0 left-0 w-full bg-black/60 p-5 text-white">
-                    <h3 class="font-semibold text-xl">Deluxe Room</h3>
+                    <h3 class="font-semibold text-xl">Golden Horizon Deluxe</h3>
                     <p class="text-sm mt-2 opacity-90">
                         Nyaman, luas, dan elegan dengan pemandangan terbaik.
                     </p>
@@ -178,14 +182,15 @@ const swiper = new Swiper(".heroSwiper", {
             {{-- Premium Suite --}}
             <div class="relative shadow-lg rounded-xl overflow-hidden group">
                 <img 
-                    src="{{ asset('img/premium suite.jpg') }}"
-                    class="w-full h-72 object-cover group-hover:scale-105 transition duration-500"
+                    src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1600&q=80"
+                    class="w-full h-72 object-cover group-hover:scale-105 transition duration-500 hover:cursor-pointer"
                 >
+                <a href="{{ route('room.coastal') }}" class="absolute inset-0"></a>
                 <div class="absolute top-3 left-3 bg-black/80 text-white text-sm px-3 py-1 rounded">
                     From Rp.1.000k/night
                 </div>
                 <div class="absolute bottom-0 left-0 w-full bg-black/60 p-5 text-white">
-                    <h3 class="font-semibold text-xl">Premium Suite</h3>
+                    <h3 class="font-semibold text-xl">Coastal Light Room</h3>
                     <p class="text-sm mt-2 opacity-90">
                         Dilengkapi ruang tamu dan fasilitas eksklusif.
                     </p>
@@ -195,14 +200,16 @@ const swiper = new Swiper(".heroSwiper", {
             {{-- Executive Suite --}}
             <div class="relative shadow-lg rounded-xl overflow-hidden group">
                 <img 
-                    src="{{ asset('img/executive suite.jpg') }}"
-                    class="w-full h-72 object-cover group-hover:scale-105 transition duration-500"
+                    src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1600&q=80
+"
+                    class="w-full h-72 object-cover group-hover:scale-105 transition duration-500 hover:cursor-pointer"
                 >
+                <a href="{{ route('room.imperial') }}" class="absolute inset-0"></a>
                 <div class="absolute top-3 left-3 bg-black/80 text-white text-sm px-3 py-1 rounded">
                     From Rp.1.500k/night
                 </div>
                 <div class="absolute bottom-0 left-0 w-full bg-black/60 p-5 text-white">
-                    <h3 class="font-semibold text-xl">Executive Suite</h3>
+                    <h3 class="font-semibold text-xl">Imperial Ocean Suite</h3>
                     <p class="text-sm mt-2 opacity-90">
                         Ruangan super luas dengan fasilitas VIP.
                     </p>
