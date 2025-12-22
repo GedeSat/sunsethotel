@@ -9,36 +9,35 @@
 </head>
 
 {{-- FULL BACKGROUND SUNSET --}}
-<body class=" ">
-
+<body class="page-transition">
+    
     {{-- NAVBAR HOTEL --}}
     @include('layouts.hotel-nav')
-
+    
     {{-- CONTENT --}}
     <main class=""> {{-- Tambah padding biar tidak ketutup navbar --}}
         @yield('content')
     </main>
-
+    
     {{-- Sfooter hotel --}}
     @include('layouts.footer')
     
-
-
-<script>
-    const profileBtn = document.getElementById('profileBtn');
-    const dropdown = document.getElementById('dropdownMenu');
-
-    profileBtn.addEventListener('click', () => {
-        dropdown.classList.toggle('hidden');
-    });
-
-    // Klik di luar dropdown → tutup
-    document.addEventListener('click', (e) => {
-        if (!profileBtn.contains(e.target) && !dropdown.contains(e.target)) {
-            dropdown.classList.add('hidden');
-        }
-    });
-</script>
-
+    
+    
+    <script>
+        const profileBtn = document.getElementById('profileBtn');
+        const dropdown = document.getElementById('dropdownMenu');
+        
+        profileBtn.addEventListener('click', () => {
+            dropdown.classList.toggle('hidden');
+        });
+        
+        // Klik di luar dropdown → tutup
+        document.addEventListener('click', (e) => {
+            if (!profileBtn.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+    </script>
 </body>
 </html>

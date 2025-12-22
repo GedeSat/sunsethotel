@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Models\Room;
 
 class RoomsController extends Controller
 {
-    // Tampilkan semua kamar
+    // =========================
+    // LIST KAMAR
+    // =========================
     public function index()
     {
         $rooms = Room::all();
@@ -19,7 +22,9 @@ class RoomsController extends Controller
         ]);
     }
 
-    // Tampilkan form tambah kamar
+    // =========================
+    // FORM TAMBAH KAMAR
+    // =========================
     public function create()
     {
         return view('admin.CreateRooms', [
@@ -27,25 +32,36 @@ class RoomsController extends Controller
         ]);
     }
 
-    // Simpan kamar baru
+    // =========================
+    // SIMPAN KAMAR BARU
+    // =========================
     public function store(Request $request)
     {
-        $request->validate([
-            'name'  => 'required',
-            'type'  => 'required',
-            'price' => 'required|numeric'
+        $data = $request->validate([
+            'name'        => 'required|string',
+            'type'        => 'required|string',
+            'price'       => 'required|numeric',
+            'description' => 'nullable|string',
+            'image'       => 'nullable|image|mimes:webp,jpg,jpeg,png|max:2048',
         ]);
 
-        Room::create([
-            'name'  => $request->name,
-            'type'  => $request->type,
-            'price' => $request->price,
-        ]);
+        // SLUG AUTO
+        $data['slug'] = Str::slug($data['name']);
+        $data['is_active'] = true;
+
+        // SIMPAN GAMBAR (SATU KALI SAJA)
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('rooms', 'public');
+        }
+
+        Room::create($data);
 
         return redirect('/admin/rooms')->with('success', 'Kamar berhasil ditambahkan!');
     }
 
-    // Tampilkan form edit kamar
+    // =========================
+    // FORM EDIT KAMAR
+    // =========================
     public function edit($id)
     {
         $room = Room::findOrFail($id);
@@ -56,27 +72,50 @@ class RoomsController extends Controller
         ]);
     }
 
-    // Update data kamar
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'name'  => 'required',
-            'type'  => 'required',
-            'price' => 'required|numeric'
-        ]);
+    // =========================
+    // UPDATE KAMAR
+    // =========================
+ public function update(Request $request, $id)
+{
+    $room = Room::findOrFail($id);
 
-        $room = Room::findOrFail($id);
+    $data = $request->validate([
+        'name' => 'required',
+        'price' => 'required|numeric',
+        'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        'gallery.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+    ]);
 
-        $room->update([
-            'name'  => $request->name,
-            'type'  => $request->type,
-            'price' => $request->price,
-        ]);
+    // checkbox
+    $data['is_active'] = $request->has('is_active');
 
-        return redirect('/admin/rooms')->with('success', 'Kamar berhasil diperbarui!');
+    // image utama
+    if ($request->hasFile('image')) {
+        $data['image'] = $request->file('image')->store('rooms', 'public');
     }
 
-    // Hapus kamar
+    // gallery
+    if ($request->hasFile('gallery')) {
+        $galleryPaths = [];
+
+        foreach ($request->file('gallery') as $img) {
+            $galleryPaths[] = $img->store('rooms/gallery', 'public');
+        }
+
+        $data['gallery'] = $galleryPaths;
+    }
+
+    $room->update($data);
+
+    return back()->with('success', 'Kamar berhasil diperbarui');
+}
+
+
+
+
+    // =========================
+    // HAPUS KAMAR
+    // =========================
     public function destroy($id)
     {
         $room = Room::findOrFail($id);
@@ -84,9 +123,4 @@ class RoomsController extends Controller
 
         return redirect('/admin/rooms')->with('success', 'Kamar berhasil dihapus!');
     }
-
-
-    
 }
-
-

@@ -38,4 +38,47 @@
     </tbody>
   </table>
 </div>
+
+{{-- PREVIEW CARD VIEW (FRONTEND STYLE) --}}
+<h2 class="text-2xl font-semibold mt-16 mb-8">
+    Preview Tampilan Website (Klik untuk Edit)
+</h2>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
+
+@foreach ($rooms as $room)
+    <a href="{{ route('rooms.edit', $room->id) }}"
+       class="group relative block shadow-lg rounded-xl overflow-hidden">
+
+        {{-- GAMBAR --}}
+        <img 
+            src="{{ $room->image 
+                    ? asset('storage/'.$room->image) 
+                    : 'https://via.placeholder.com/600x400?text=No+Image' }}"
+            class="w-full h-72 object-cover group-hover:scale-105 transition duration-500"
+        >
+
+        {{-- HARGA --}}
+        <div class="absolute top-3 left-3 bg-black/80 text-white text-sm px-3 py-1 rounded">
+            Rp{{ number_format($room->price,0,',','.') }}/night
+        </div>
+
+        {{-- INFO --}}
+        <div class="absolute bottom-0 left-0 w-full bg-black/60 p-5 text-white">
+            <h3 class="font-semibold text-xl">{{ $room->name }}</h3>
+            <p class="text-sm mt-1 opacity-90">{{ $room->type }}</p>
+        </div>
+
+        {{-- BADGE ADMIN --}}
+        <div class="absolute top-3 right-3 bg-orange-500 text-white text-xs px-3 py-1 rounded-full">
+            Edit
+        </div>
+
+    </a>
+@endforeach
+
+</div>
+
+
 @endsection
+

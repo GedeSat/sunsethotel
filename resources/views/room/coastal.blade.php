@@ -93,7 +93,7 @@
                 <div class="mb-10 p-8 bg-gradient-to-r from-cyan-600 to-blue-700 rounded-3xl text-white shadow-xl relative group">
                     <p class="text-cyan-200 text-sm font-semibold tracking-wider uppercase">Best Value Guaranteed</p>
                     <div class="flex items-baseline gap-2 mt-2">
-                        <span class="text-4xl font-black">Rp 850.000</span>
+                        <span class="text-4xl font-black">Rp 1.000.000</span>
                         <span class="text-cyan-100 font-light">/ malam</span>
                     </div>
                 </div>

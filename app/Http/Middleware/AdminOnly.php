@@ -8,16 +8,22 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminOnly
 {
-public function handle(Request $request, Closure $next)
-{
-    if (!Auth::check()) {
-        return redirect('/login'); // belum login ke login
-    }
+    public function handle(Request $request, Closure $next)
+    {
+        // 1. Cek Login
+        if (!Auth::check()) {
+            return redirect('/login');
+        }
 
-    if (Auth::user()->email === 'adminsunset@gmail.com' || Auth::user()->is_admin) {
-        return $next($request); // admin boleh lanjut
-    }
+        // 2. Cek Role (Sesuai database kamu)
+        // Kita cek kolom 'role' apakah isinya 'admin'
+        if (Auth::user()->role === 'admin' || Auth::user()->email === 'adminsunset@gmail.com') {
+            return $next($request); // Lanjut
+        }
 
-    return redirect('/'); // selain admin ke homepage
-}
+        // 3. Jika bukan admin
+        // Opsional: Lebih baik pakai abort(403) biar jelas errornya, 
+        // tapi redirect('/') juga boleh.
+        return abort(403, 'Akses Ditolak. Anda bukan Admin.');
+    }
 }

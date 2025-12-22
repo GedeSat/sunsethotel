@@ -1,13 +1,28 @@
 {{-- LOADER GLOBAL --}}
-<div id="pageLoader"
+{{-- <div id="pageLoader"
     class="fixed inset-0 bg-white z-[9999] flex items-center justify-center opacity-100 pointer-events-auto transition-opacity duration-500">
     <div class="flex space-x-2">
         <div class="w-3 h-3 bg-orange-600 rounded-full animate-bounce"></div>
         <div class="w-3 h-3 bg-orange-500 rounded-full animate-bounce [animation-delay:0.15s]"></div>
         <div class="w-3 h-3 bg-orange-400 rounded-full animate-bounce [animation-delay:0.3s]"></div>
     </div>
-</div>
+</div> --}}
 
+<style>
+    .page-transition {
+    opacity: 0;
+    transition: opacity 0.45s ease;
+}
+
+.page-transition.is-loaded {
+    opacity: 1;
+}
+
+.page-transition.is-leaving {
+    opacity: 0;
+}
+
+</style>
 
 <nav class="w-full fixed top-0 left-0 z-50 bg-black/40 backdrop-blur-xl border-b border-orange-500/40">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
@@ -20,7 +35,7 @@
             <a href="/" class="nav-link text-white hover:text-orange-300 px-4 py-2">Home</a>
             <a href="/booking" class="nav-link text-white hover:text-orange-300 px-4 py-2">Booking</a>
             <a href="/about-us" class="nav-link text-white hover:text-orange-300 px-4 py-2">About us</a>
-            <a href="{{ route('contact') }}" class="no-loader text-white hover:text-orange-300 px-4 py-2">Contact</a>
+            <a href="/contact" class="no-loader text-white hover:text-orange-300 px-4 py-2">Contact</a>
         </div>
 
         <!-- AUTH AREA -->
@@ -59,42 +74,24 @@
 {{-- SCRIPT LOADER --}}
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-    const loader = document.getElementById("pageLoader");
+    const body = document.body;
 
-    // Hilangkan loader setelah load
-    setTimeout(() => {
-        loader.classList.add("opacity-0", "pointer-events-none");
-        setTimeout(() => loader.style.display = "none", 500);
-    }, 500);
+    // Fade IN saat halaman siap
+    requestAnimationFrame(() => {
+        body.classList.add("is-loaded");
+    });
 
-    // Saat klik link
+    // Fade OUT saat klik link
     document.querySelectorAll("a.nav-link").forEach(link => {
-        link.addEventListener("click", (e) => {
-            const url = link.getAttribute("href");
+        link.addEventListener("click", e => {
+            const href = link.getAttribute("href");
 
-            if (!url || url.startsWith("#")) return;
+            if (!href || href.startsWith("#") || link.target === "_blank") return;
 
-            e.preventDefault();
-
-            loader.style.display = "flex";
-            loader.classList.remove("opacity-0", "pointer-events-none");
-
-            setTimeout(() => window.location.href = url, 250);
+            body.classList.remove("is-loaded");
+            body.classList.add("is-leaving");
         });
-    });
-
-    // Saat submit form
-    document.querySelectorAll("form:not(.no-loader)").forEach(form => {
-        form.addEventListener("submit", () => {
-            loader.style.display = "flex";
-            loader.classList.remove("opacity-0", "pointer-events-none");
-        });
-    });
-
-    // Saat reload / berpindah halaman (back/forward)
-    window.addEventListener("beforeunload", () => {
-        loader.style.display = "flex";
-        loader.classList.remove("opacity-0", "pointer-events-none");
     });
 });
 </script>
+

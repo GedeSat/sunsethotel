@@ -6,5 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Room extends Model
 {
-    protected $fillable = ['hotel_id', 'name', 'type', 'price'];
+   protected $fillable = [
+    'name',
+    'slug',
+    'type',
+    'price',
+    'description',
+    'image',
+    'is_active',
+];
+
+
+protected $casts = [
+    'gallery' => 'array',
+];
+
+
 }
