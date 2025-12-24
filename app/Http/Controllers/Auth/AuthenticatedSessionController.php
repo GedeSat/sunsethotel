@@ -45,7 +45,7 @@ class AuthenticatedSessionController extends Controller
     }
 
     // Redirect user biasa
-    return redirect('/');
+    return redirect('/login');
 }
 
 

@@ -18,19 +18,7 @@
 
 <body>
 
-  <!-- LOADER OVERLAY -->
-<div id="pageLoader"
-    class="fixed inset-0 bg-white z-[9999] flex items-center justify-center 
-           opacity-100 pointer-events-auto 
-           transition-opacity duration-700">
-
-    <!-- Bola loading -->
-    <div class="flex space-x-2">
-        <div class="w-3 h-3 bg-orange-600 rounded-full animate-bounce"></div>
-        <div class="w-3 h-3 bg-orange-500 rounded-full animate-bounce [animation-delay:0.15s]"></div>
-        <div class="w-3 h-3 bg-orange-400 rounded-full animate-bounce [animation-delay:0.20s]"></div>
-        <div class="w-3 h-3 bg-orange-400 rounded-full animate-bounce [animation-delay:0.25s]"></div>
-    </div>
+  
 
 </div> <!-- WAJIB ADA!! -->
 
@@ -47,43 +35,6 @@
 window.addEventListener("load", () => {
     const loader = qs("#pageLoader");
 
-    // Fade-out saat semua halaman selesai load
-    setTimeout(() => {
-        loader.classList.add("opacity-0");
-        setTimeout(() => {
-            loader.style.display = "none";
-        }, 500);
-    }, 900);
-
-    // Loader saat klik link
-    qsa("a.nav-link").forEach(link => {
-        safeOn(link, "click", (e) => {
-            const url = link.getAttribute("href");
-
-            if (!url || url.startsWith("#")) return;
-
-            e.preventDefault();
-
-            loader.style.display = "flex";
-            setTimeout(() => loader.classList.remove("opacity-0"), 10);
-
-            setTimeout(() => {
-                window.location.href = url;
-            }, 350);
-        });
-    });
-
-    // Loader saat submit form
-    qsa("form:not(.no-loader)").forEach(form => {
-        safeOn(form, "submit", () => {
-            loader.style.display = "flex";
-            loader.classList.remove("opacity-0");
-        });
-    });
-
-});
-
-</script>
 
 
 

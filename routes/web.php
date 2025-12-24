@@ -3,9 +3,10 @@
 use App\Models\User;
 use App\Models\Room;
 use App\Models\Booking;
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Route; 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Admin\UserController;
 
 // Controllers
 use App\Http\Controllers\PaymentController;
@@ -149,8 +150,8 @@ Route::post('/midtrans/callback', [PaymentController::class, 'callback']);
 |--------------------------------------------------------------------------
 */
 // User Dashboard
-Route::get('/dashboard', function () {
-    return view('dashboard');
+Route::get('/login', function () {
+    return view('auth.login');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Admin Dashboard
@@ -163,6 +164,18 @@ Route::middleware(['auth', AdminOnly::class])->group(function () {
   // Route Booking (Ke function bookings) <-- PASTIKAN INI KE 'bookings'
 Route::get('/admin/bookings', [AdminController::class, 'bookings'])->name('admin.bookings');
 });
+
+Route::middleware(['auth', AdminOnly::class])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('users', UserController::class);
+});
+
+Route::middleware(['auth', AdminOnly::class])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::resource('users', UserController::class);
+});
+
 
 /*
 |--------------------------------------------------------------------------

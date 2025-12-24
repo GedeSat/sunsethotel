@@ -283,7 +283,7 @@
 
         // Redirect ke Halaman Payment
         // Format URL: /booking/payment/{id}?check_in=...&check_out=...
-        const baseUrl = "{{ url('/payment') }}";
+       const baseUrl = "{{ url('/booking/payment') }}";
         const url = `${baseUrl}/${roomId}?check_in=${checkIn}&check_out=${checkOut}`;
         
         window.location.href = url;

@@ -24,6 +24,6 @@ class AdminOnly
         // 3. Jika bukan admin
         // Opsional: Lebih baik pakai abort(403) biar jelas errornya, 
         // tapi redirect('/') juga boleh.
-        return abort(403, 'Akses Ditolak. Anda bukan Admin.');
+        return redirect ('/');
     }
 }
