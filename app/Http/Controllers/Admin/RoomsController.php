@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\Room;
 
+use function PHPSTORM_META\type;
+
 class RoomsController extends Controller
 {
     // =========================
@@ -75,26 +77,16 @@ class RoomsController extends Controller
     // =========================
     // UPDATE KAMAR
     // =========================
- public function update(Request $request, $id)
+public function update(Request $request, Room $room)
 {
-    $room = Room::findOrFail($id);
+    $data = $request->all();
 
-    $data = $request->validate([
-        'name' => 'required',
-        'price' => 'required|numeric',
-        'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-        'gallery.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-    ]);
-
-    // checkbox
-    $data['is_active'] = $request->has('is_active');
-
-    // image utama
+    // IMAGE UTAMA
     if ($request->hasFile('image')) {
         $data['image'] = $request->file('image')->store('rooms', 'public');
     }
 
-    // gallery
+    // GALLERY (INI YANG KURANG DI KODE KAMU)
     if ($request->hasFile('gallery')) {
         $galleryPaths = [];
 
@@ -105,10 +97,14 @@ class RoomsController extends Controller
         $data['gallery'] = $galleryPaths;
     }
 
+    // CHECKBOX
+    $data['is_active'] = $request->has('is_active');
+
     $room->update($data);
 
-    return back()->with('success', 'Kamar berhasil diperbarui');
+    return redirect()->back()->with('success', 'Kamar berhasil diperbarui');
 }
+
 
 
 

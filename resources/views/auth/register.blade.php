@@ -59,7 +59,7 @@
                 <div class="mb-4">
                     <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                     <x-text-input id="email" class="mt-1 w-full input-light"
-                        type="email" name="email" :value="old('email')" required autocomplete="username" placeholder="email@example.com" />
+                        type="email" name="email" :value="old('email')" required autocomplete="username" placeholder="email@example.com" required />
                     <x-input-error :messages="$errors->get('email')" class="mt-2 text-sm text-red-600" />
                 </div>
 

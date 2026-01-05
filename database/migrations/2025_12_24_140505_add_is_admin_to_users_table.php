@@ -11,16 +11,15 @@ return new class extends Migration
      */
    public function up()
 {
-    Schema::table('rooms', function (Blueprint $table) {
-        $table->string('image')->nullable()->after('price');
+    Schema::table('users', function (Blueprint $table) {
+        $table->boolean('is_admin')->default(false);
     });
 }
 
 public function down()
 {
-    Schema::table('rooms', function (Blueprint $table) {
-        $table->dropColumn('image');
+    Schema::table('users', function (Blueprint $table) {
+        $table->dropColumn('is_admin');
     });
 }
-
 };

@@ -45,4 +45,6 @@ class AdminController extends Controller
         // Return ke view khusus tabel booking
         return view('admin.adminBooking', compact('bookings'));
     }
+
+    
 }

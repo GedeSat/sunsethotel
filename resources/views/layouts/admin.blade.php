@@ -7,6 +7,7 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <body class="bg-gray-100">
 

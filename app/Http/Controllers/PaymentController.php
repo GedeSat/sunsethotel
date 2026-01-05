@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Room;
-use App\Models\Booking; 
+use App\Models\Booking;
 use Illuminate\Support\Facades\Auth;
 use Midtrans\Config;
 use Midtrans\Snap;
@@ -23,7 +23,7 @@ class PaymentController extends Controller
         // AMBIL DATA DARI URL (?checkin=...&checkout=...)
         $checkIn  = $request->query('checkin');
         $checkOut = $request->query('checkout');
-        
+
         // Hitung estimasi harga untuk ditampilkan di View
         $days = 0;
         $totalPrice = 0;
@@ -61,14 +61,14 @@ class PaymentController extends Controller
         try {
             // B. Hitung Total Harga Real-time (Server Side - Lebih Aman)
             $room = Room::findOrFail($request->room_id);
-            
+
             $checkIn  = new \DateTime($request->check_in);
             $checkOut = new \DateTime($request->check_out);
             $interval = $checkIn->diff($checkOut);
-            $days     = $interval->days; 
-            
-            if ($days < 1) $days = 1; 
-            
+            $days     = $interval->days;
+
+            if ($days < 1) $days = 1;
+
             $totalPrice = $days * $room->price;
 
             // C. Konfigurasi Midtrans
@@ -96,7 +96,7 @@ class PaymentController extends Controller
                         'id' => $room->id,
                         'price' => (int) $room->price,
                         'quantity' => $days,
-                        'name' => substr($room->name, 0, 45) . ' (' . $days . ' Malam)', 
+                        'name' => substr($room->name, 0, 45) . ' (' . $days . ' Malam)',
                     ]
                 ]
             ];
@@ -105,25 +105,29 @@ class PaymentController extends Controller
             $snapToken = Snap::getSnapToken($params);
 
             // G. SIMPAN KE DATABASE
-            Booking::create([
-                'user_id'     => Auth::id() ?? null,
-                'room_id'     => $room->id,
-                'name'        => $request->name,
-                'email'       => $request->email,
-                'phone'       => $request->phone,
-                'check_in'    => $request->check_in,
-                'check_out'   => $request->check_out,
-                'total_price' => $totalPrice,
-                'status'      => 'pending',       
-                'payment_token' => $orderId,      
+            $booking = Booking::create([
+                'user_id'        => Auth::id(),
+                'room_id'        => $room->id,
+                'order_id'       => $orderId,
+                'check_in'       => $request->check_in,
+                'check_out'      => $request->check_out,
+                'total_price'    => $totalPrice,
+                'payment_status' => 'pending',
+                'status'         => 'pending',
+                'snap_token'     => $snapToken,
+                'name'           => $request->name,   
+                'email'          => $request->email,  
+                'phone'          => $request->phone,
             ]);
+
+
+
 
             // H. RETURN JSON
             return response()->json([
                 'status' => 'success',
                 'snap_token' => $snapToken
             ]);
-
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
@@ -131,25 +135,39 @@ class PaymentController extends Controller
             ], 500);
         }
     }
+public function callback(Request $request)
+{
+    $serverKey = config('midtrans.server_key');
+    $signatureKey = hash(
+        'sha512',
+        $request->order_id .
+        $request->status_code .
+        $request->gross_amount .
+        $serverKey
+    );
 
-    // 3. CALLBACK (Wajib Exclude dari CSRF)
-    public function callback(Request $request)
-    {
-        $serverKey = config('midtrans.server_key');
-        $hashed = hash("sha512", $request->order_id.$request->status_code.$request->gross_amount.$serverKey);
-
-        if($hashed == $request->signature_key){
-            if($request->transaction_status == 'capture' || $request->transaction_status == 'settlement'){
-                $booking = Booking::where('payment_token', $request->order_id)->first();
-                if($booking) {
-                    $booking->update(['status' => 'success']);
-                }
-            }
-            // Optional: Handle expire/cancel/deny
-            if($request->transaction_status == 'expire' || $request->transaction_status == 'cancel'){
-                 $booking = Booking::where('payment_token', $request->order_id)->first();
-                 if($booking) $booking->update(['status' => 'failed']);
-            }
-        }
+    if ($signatureKey !== $request->signature_key) {
+        return response()->json(['message' => 'Invalid signature'], 403);
     }
+
+    $booking = Booking::where('order_id', $request->order_id)->first();
+
+    if (!$booking) {
+        return response()->json(['message' => 'Order not found'], 404);
+    }
+
+    if (in_array($request->transaction_status, ['settlement', 'capture'])) {
+        $booking->update([
+            'payment_status' => 'paid',
+            'status' => 'confirmed'
+        ]);
+    } elseif ($request->transaction_status === 'pending') {
+        $booking->update(['payment_status' => 'pending']);
+    } else {
+        $booking->update(['payment_status' => 'failed']);
+    }
+
+    return response()->json(['message' => 'OK']);
+}
+
 }

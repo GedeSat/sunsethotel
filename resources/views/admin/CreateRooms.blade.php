@@ -3,6 +3,15 @@
 @section('content')
 <h2 class="text-2xl font-semibold mb-6">Tambah Kamar</h2>
 
+@if (session('success'))
+<div 
+    id="successAlert"
+    class="fixed top-6 right-6 bg-green-500 text-white px-6 py-4 rounded-xl shadow-lg
+           animate-slide-in">
+    ✅ {{ session('success') }}
+</div>
+@endif
+
 <form 
     action="/admin/rooms" 
     method="POST" 
@@ -50,3 +59,9 @@
     </button>
 </form>
 @endsection
+<script>
+    setTimeout(() => {
+        const alert = document.getElementById('successAlert');
+        if (alert) alert.remove();
+    }, 2500);
+</script>

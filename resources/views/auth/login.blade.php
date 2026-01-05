@@ -1,6 +1,3 @@
-
-
-
 <x-guest-layout>
 
     <style>
@@ -98,12 +95,12 @@
                 </div>
 
                 <!-- Social Login Buttons -->
-                <button type="button" class="w-full py-2 btn-social flex items-center justify-center gap-2">
-                    <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google" class="w-5 h-5">
-                    <span>Google</span>
-                </button>
 
-
+                <a href="{{ route('google.login') }}"
+                    class="w-full py-2 btn-social flex items-center justify-center gap-2"> <img
+                        src="https://www.svgrepo.com/show/355037/google.svg" alt="Google" class="w-5 h-5">
+                    Login with Google
+                </a>
             </form>
 
             <p class="text-center text-gray-700 mt-4">

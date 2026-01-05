@@ -15,11 +15,19 @@ class adminDashboard extends Controller
         $availableRooms = Room::count();
         $totalUsers = User::count();
 
-        return view('admin.admindashb', [
-            'title' => 'Dashboard Admin',
-            'totalBookings' => $totalBookings,
-            'availableRooms' => $availableRooms,
-            'totalUsers' => $totalUsers,
-        ]);
+        $latestBookings = Booking::with(['user', 'room'])
+    ->latest()
+    ->limit(5)
+    ->get();
+
+
+       return view('admin.admindashb', [
+    'title' => 'Dashboard Admin',
+    'totalBookings' => $totalBookings,
+    'availableRooms' => $availableRooms,
+    'totalUsers' => $totalUsers,
+    'latestBookings' => $latestBookings,
+]);
+
     }
 }

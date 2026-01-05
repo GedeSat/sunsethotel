@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Str;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Room;
 use App\Models\Booking;
 use Midtrans\Config; // Tambahkan ini
 use Midtrans\Snap;   // Tambahkan ini
+use Illuminate\Support\Facades\Log;
 
 class BookingController extends Controller
 {
@@ -39,10 +42,8 @@ class BookingController extends Controller
         return view('front.payment', compact('room'));
     }
 
-    // 3. Proses Mendapatkan Snap Token (Dipanggil oleh AJAX)
     public function process(Request $request)
     {
-        // A. Validasi Input
         $request->validate([
             'name'      => 'required|string',
             'email'     => 'required|email',
@@ -52,61 +53,64 @@ class BookingController extends Controller
             'room_id'   => 'required|exists:rooms,id',
         ]);
 
-        // B. Ambil Data Kamar & Hitung Total
         $room = Room::findOrFail($request->room_id);
-        
-        $checkIn  = new \DateTime($request->check_in);
-        $checkOut = new \DateTime($request->check_out);
-        $interval = $checkIn->diff($checkOut);
-        $days     = $interval->days; // Durasi malam
-        
-        // Pastikan minimal 1 malam (jika user input hari yg sama, anggap 1 malam)
-        $days = $days < 1 ? 1 : $days;
+
+        $days = max(
+            (new \DateTime($request->check_in))
+                ->diff(new \DateTime($request->check_out))
+                ->days,
+            1
+        );
 
         $totalPrice = $room->price * $days;
 
-        // C. Buat Order ID Unik
-        $orderId = 'BOOK-' . time() . '-' . rand(100, 999);
+        $orderId = 'ORD-' . now()->format('YmdHis') . '-' . Str::random(5);
 
-        // D. Konfigurasi Midtrans
+        // SIMPAN BOOKING
+      $booking = Booking::create([
+    'order_id'       => $orderId,
+    'user_id'        => Auth::id(),
+    'room_id'        => $request->room_id,
+    'check_in'       => $request->check_in,
+    'check_out'      => $request->check_out,
+    'total_price'    => $totalPrice,
+    'payment_status' => 'pending',
+    'status'         => 'pending',
+]);
+
+
+        // MIDTRANS
         Config::$serverKey = config('midtrans.server_key');
         Config::$isProduction = config('midtrans.is_production');
         Config::$isSanitized = true;
         Config::$is3ds = true;
 
-        // E. Siapkan Parameter untuk Midtrans
         $params = [
             'transaction_details' => [
-                'order_id'     => $orderId,
+                'order_id' => $orderId,
                 'gross_amount' => $totalPrice,
             ],
             'customer_details' => [
                 'first_name' => $request->name,
-                'email'      => $request->email,
-                'phone'      => $request->phone,
+                'email' => $request->email,
+                'phone' => $request->phone,
             ],
-            'item_details' => [
-                [
-                    'id'       => $room->id,
-                    'price'    => $room->price,
-                    'quantity' => $days,
-                    'name'     => $room->name . ' (' . $days . ' Malam)',
-                ]
-            ]
+            'item_details' => [[
+                'id' => $room->id,
+                'price' => $room->price,
+                'quantity' => $days,
+                'name' => $room->name,
+            ]]
         ];
 
-        // F. Request Snap Token dari Midtrans
-        try {
-            $snapToken = Snap::getSnapToken($params);
+        $snapToken = Snap::getSnapToken($params);
 
-            // G. (Opsional) Simpan Booking ke Database dengan status 'Unpaid' di sini jika mau
-            // Booking::create([ ... 'status' => 'unpaid', 'snap_token' => $snapToken ... ]);
+        $booking->update([
+            'snap_token' => $snapToken
+        ]);
 
-            // H. RETURN JSON (PENTING UNTUK AJAX)
-            return response()->json(['snap_token' => $snapToken]);
-
-        } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
-        }
+        return response()->json([
+            'snap_token' => $snapToken
+        ]);
     }
 }
