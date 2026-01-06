@@ -5,11 +5,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Barryvdh\DomPDF\Facade\Pdf;
-
+use Illuminate\Support\Facades\Schedule;
 // Models
 use App\Models\Room;
 use App\Models\Booking;
-
+use App\Http\Controllers\ContactController;
 // Controllers Public & User
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\BookingController;
@@ -19,8 +19,9 @@ use App\Http\Controllers\GoogleAuthController;
 // Controllers Admin
 use App\Http\Controllers\Admin\RoomsController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\adminDashboard; // Pastikan nama class sesuai
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\adminDashboard;
+use App\Http\Controllers\AdminController; 
+use App\Http\Controllers\Admin\AdminBookingController; // <--- [BARU] Tambahkan ini!
 
 // Middleware
 use App\Http\Middleware\AdminOnly;
@@ -36,16 +37,19 @@ Route::get('/', function () {
         'title' => 'Sunset Hotel – Homepage',
         'rooms' => $rooms
     ]);
-});
+})->name('homepage');
 
 Route::get('/about-us', function () {
     return view('aboutUs', ['title' => 'Sunset Hotel – About Us']);
 });
 
-Route::get('/contact', function () {
-    return view('contact', ['title' => 'Sunset Hotel – Contact Us']);
-})->name('contact');
 
+Route::get('/contact', function () {
+    return view('contact'); 
+});
+// Menjadi seperti ini:
+Route::get('/admin/laporan', [ContactController::class, 'laporan'])->name('admin.laporan');
+Route::post('/admin/laporan', [ContactController::class, 'store'])->name('contact.store');
 /*
 |--------------------------------------------------------------------------
 | ROOMS (PUBLIC)
@@ -73,7 +77,6 @@ Route::get('auth/google/callback', [GoogleAuthController::class, 'callback']);
 |--------------------------------------------------------------------------
 */
 Route::get('/dashboard', function () {
-    // Pastikan Anda punya file resources/views/dashboard.blade.php
     return view('dashboard'); 
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -86,14 +89,14 @@ Route::middleware(['auth'])->group(function () {
     // 1. Halaman Pilih Kamar / Form Booking
     Route::get('/booking', [BookingController::class, 'index'])->name('booking');
     
-    // 2. Simpan Booking (Logic lama, opsional jika sudah pakai flow PaymentController)
+    // 2. Simpan Booking
     Route::post('/booking', [BookingController::class, 'book'])->name('booking.store');
 
-    // 3. Halaman Konfirmasi Pembayaran & Snap (Flow Baru)
-    Route::get('/booking/payment/{id}', [PaymentController::class, 'pay'])->name('booking.payment');
+    // 3. Proses Booking & Request Token Midtrans (AJAX) - (Sesuai Controller Booking Baru)
+    Route::post('/booking/process', [BookingController::class, 'process'])->name('booking.process');
     
-    // 4. Proses Request Token Midtrans (AJAX)
-    Route::post('/booking/process', [PaymentController::class, 'process'])->name('booking.process');
+    // 4. Halaman Payment (Jika ada)
+    Route::get('/booking/payment/{id}', [PaymentController::class, 'pay'])->name('booking.payment');
     
     // 5. User Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -103,10 +106,8 @@ Route::middleware(['auth'])->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| MIDTRANS CALLBACK (Webhook) - PENTING!
+| MIDTRANS CALLBACK (Webhook)
 |--------------------------------------------------------------------------
-| Route ini diakses oleh Server Midtrans, BUKAN oleh User. 
-| Jadi jangan taruh di dalam middleware 'auth'.
 */
 Route::post('/payment/callback', [PaymentController::class, 'callback'])->name('payment.callback');
 
@@ -129,8 +130,13 @@ Route::middleware(['auth', AdminOnly::class])
         // CRUD Users
         Route::resource('users', UserController::class);
 
-        // List Bookings
-        Route::get('/bookings', [AdminController::class, 'bookings'])->name('bookings');
+        // --- MANAJEMEN BOOKING & CHECK-IN/OUT (UPDATED) ---
+        
+        // 1. Menampilkan Daftar Booking (Gunakan Controller Baru)
+        Route::get('/bookings', [AdminBookingController::class, 'index'])->name('bookings');
+
+        // 2. Proses Update Status (Check In / Check Out) - [BARU]
+        Route::put('/bookings/{id}/update', [AdminBookingController::class, 'updateStatus'])->name('bookings.update');
 });
 
 /*
@@ -157,10 +163,14 @@ Route::get('/cek-pdf', function () {
     return $pdf->stream();
 });
 
+// Route untuk cetak invoice
+Route::get('/booking/invoice/{id}', [App\Http\Controllers\BookingController::class, 'printInvoice'])->name('booking.invoice');
+
+
+Schedule::command('bookings:autocancel')->dailyAt('01:00');
 /*
 |--------------------------------------------------------------------------
 | AUTH ROUTES (Breeze)
 |--------------------------------------------------------------------------
-| Ini menangani /login, /register, /logout secara otomatis
 */
 require __DIR__.'/auth.php';

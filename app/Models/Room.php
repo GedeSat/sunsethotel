@@ -15,6 +15,7 @@ class Room extends Model
     'image',
     'is_active',
     'gallery',
+    'status',
 ];
 
 

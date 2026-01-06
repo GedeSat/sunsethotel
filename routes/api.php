@@ -11,3 +11,7 @@ Route::get('/user', function (Request $request) {
 
 // --- INI YANG WAJIB ADA ---
 Route::post('/midtrans/callback', [MidtransController::class, 'callback']);
+
+use App\Http\Controllers\BookingController;
+
+Route::get('/booked-dates/{roomId}', [BookingController::class, 'getBookedDates']);

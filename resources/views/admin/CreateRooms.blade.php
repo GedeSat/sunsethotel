@@ -29,12 +29,15 @@
     >
 
     <label class="block mb-2 font-medium">Tipe</label>
-    <input 
-        type="text" 
+    <select 
         name="type" 
         class="w-full p-3 border rounded mb-4"
         required
     >
+        <option value="deluxe">Deluxe</option>
+        <option value="suite">Suite</option>
+        <option value="premium">Premium</option>
+    </select>
 
     <label class="block mb-2 font-medium">Harga</label>
     <input 

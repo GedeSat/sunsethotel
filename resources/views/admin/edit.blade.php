@@ -32,7 +32,7 @@
 
 </style>
     <h2 class="text-2xl font-semibold mb-6">Edit Kamar</h2>
-    <form action="{{ route('rooms.update', $room->id) }}" method="POST" enctype="multipart/form-data"
+    <form action="{{ route('admin.rooms.update', $room->id) }}" method="POST" enctype="multipart/form-data"
         class="bg-white p-6 rounded-xl shadow w-full max-w-xl">
         @csrf
         @method('PUT')
@@ -43,8 +43,22 @@
         <label class="block mb-2 font-medium">Slug</label>
         <input type="text" name="slug" value="{{ $room->slug }}" class="w-full p-3 border rounded mb-4">
 
-        <label class="block mb-2 font-medium">Tipe</label>
-        <input type="text" name="type" value="{{ $room->type }}" class="w-full p-3 border rounded mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2">Tipe Kamar</label>
+<select name="type" class="w-full p-3 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-orange-500">
+    <option value="" disabled>Pilih Tipe Kamar</option>
+    
+    <option value="deluxe" {{ old('type', $room->type) == 'deluxe' ? 'selected' : '' }}>
+        Deluxe
+    </option>
+    
+    <option value="suite" {{ old('type', $room->type) == 'suite' ? 'selected' : '' }}>
+        Suite
+    </option>
+    
+    <option value="premium" {{ old('type', $room->type) == 'premium' ? 'selected' : '' }}>
+        Premium
+    </option>
+</select>
 
         <label class="block mb-2 font-medium">Harga</label>
         <input type="number" name="price" value="{{ $room->price }}" class="w-full p-3 border rounded mb-4">

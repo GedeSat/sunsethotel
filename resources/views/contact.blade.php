@@ -2,8 +2,14 @@
 
 @section('content')
 
+    {{-- Menampilkan pesan sukses jika ada --}}
+    @if (session('success'))
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <section class="relative bg-gradient-to-br from-orange-50 via-white to-orange-100">
-        <!-- Header -->
         <div class="max-w-7xl mx-auto px-6 py-20 text-center">
             <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
                 Contact <span class="text-orange-600">Sunset Hotel</span>
@@ -13,9 +19,8 @@
             </p>
         </div>
 
-        <!-- Content -->
         <div class="max-w-7xl mx-auto px-6 pb-24 grid grid-cols-1 md:grid-cols-2 gap-12">
-            <!-- Contact Info -->
+            
             <div class="bg-white rounded-2xl shadow-lg p-8 space-y-6">
                 <h2 class="text-2xl font-semibold text-gray-800">Informasi Kontak</h2>
 
@@ -46,39 +51,53 @@
                 <div class="pt-4">
                     <p class="font-medium text-gray-700 mb-2">Ikuti Kami</p>
                     <div class="flex gap-4">
-                        <a href="#" class="text-gray-500 hover:text-orange-600 transition"><i class="fa-brands fa-instagram text-2xl"></i></a>
-                        <a href="#" class="text-gray-500 hover:text-orange-600 transition"><i class="fa-brands fa-facebook text-2xl"></i></a>
-                        <a href="#" class="text-gray-500 hover:text-orange-600 transition"><i class="fa-brands fa-whatsapp text-2xl"></i></a>
+                        <a href="#" class="text-gray-500 hover:text-orange-600 transition">
+                            <i class="fa-brands fa-instagram text-2xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-500 hover:text-orange-600 transition">
+                            <i class="fa-brands fa-facebook text-2xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-500 hover:text-orange-600 transition">
+                            <i class="fa-brands fa-whatsapp text-2xl"></i>
+                        </a>
                     </div>
                 </div>
             </div>
 
-            <!-- Contact Form -->
             <div class="bg-white rounded-2xl shadow-lg p-8">
                 <h2 class="text-2xl font-semibold text-gray-800 mb-6">Kirim Pesan</h2>
 
-                <form method="POST" action="#" class="space-y-5">
+                <form method="POST" action="{{ route('contact.store') }}" class="space-y-5">
                     @csrf
+                    
+                    {{-- Input Nama --}}
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Nama</label>
-                        <input type="text" placeholder="Nama lengkap" class="w-full rounded-xl border-gray-300 focus:border-orange-500 focus:ring-orange-500" />
+                        <input type="text" name="name" placeholder="Nama lengkap" required
+                            class="w-full rounded-xl border-gray-300 focus:border-orange-500 focus:ring-orange-500" />
                     </div>
 
+                    {{-- Input Email --}}
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                        <input type="email" placeholder="email@example.com" class="w-full rounded-xl border-gray-300 focus:border-orange-500 focus:ring-orange-500" />
+                        <input type="email" name="email" placeholder="email@example.com" required
+                            class="w-full rounded-xl border-gray-300 focus:border-orange-500 focus:ring-orange-500" />
                     </div>
-
+                    {{-- Input Pesan --}}
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Pesan</label>
-                        <textarea rows="4" placeholder="Tulis pesan Anda..." class="w-full rounded-xl border-gray-300 focus:border-orange-500 focus:ring-orange-500"></textarea>
+                        <textarea name="message" rows="4" placeholder="Tulis pesan Anda..." required
+                            class="w-full rounded-xl border-gray-300 focus:border-orange-500 focus:ring-orange-500"></textarea>
                     </div>
 
-                    <button type="submit" class="w-full bg-orange-600 text-white py-3 rounded-xl font-medium hover:bg-orange-700 transition">
+                    {{-- Tombol Kirim --}}
+                    <button type="submit"
+                        class="w-full bg-orange-600 text-white py-3 rounded-xl font-medium hover:bg-orange-700 transition">
                         Kirim Pesan
                     </button>
                 </form>
             </div>
+
         </div>
     </section>
 @endsection

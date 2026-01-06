@@ -300,7 +300,7 @@
                                     title: 'Pembayaran Berhasil! 🎉',
                                     text: 'Terima kasih, pesanan kamar Anda telah dikonfirmasi.',
                                     icon: 'success',
-                                    confirmButtonText: 'Lihat Tiket',
+                                    confirmButtonText: 'kembali ke Beranda',
                                     confirmButtonColor: '#ea580c',
                                     allowOutsideClick: false
                                 }).then((result) => {

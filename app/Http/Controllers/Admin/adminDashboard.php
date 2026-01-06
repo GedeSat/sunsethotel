@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\Room;
 use App\Models\User;
+use App\Models\Contact;
 
 class adminDashboard extends Controller
 {
@@ -20,13 +21,18 @@ class adminDashboard extends Controller
     ->limit(5)
     ->get();
 
+    $messages = Contact::latest()->take(5)->get();
+    
+
 
        return view('admin.admindashb', [
     'title' => 'Dashboard Admin',
     'totalBookings' => $totalBookings,
     'availableRooms' => $availableRooms,
     'totalUsers' => $totalUsers,
-    'latestBookings' => $latestBookings,
+    'bookings' => $latestBookings,
+
+    'contacts' => $messages,
 ]);
 
     }

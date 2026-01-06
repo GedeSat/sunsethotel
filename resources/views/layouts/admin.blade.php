@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,7 +23,12 @@
                 <a href="/admin/rooms" class="block p-3 rounded-lg hover:bg-orange-100 text-gray-700">Kelola Kamar</a>
                 <a href="/admin/bookings" class="block p-3 rounded-lg hover:bg-orange-100 text-gray-700">Booking</a>
                 <a href="/admin/users" class="block p-3 rounded-lg hover:bg-orange-100 text-gray-700">User</a>
-                <a href="/admin/reports" class="block p-3 rounded-lg hover:bg-orange-100 text-gray-700">Laporan</a>
+                <a href="{{ route('admin.laporan') }}"
+                    class="{{ request()->routeIs('admin.laporan') ? 'bg-orange-100 text-orange-700' : 'text-gray-700 hover:bg-orange-100' }} block p-3 rounded-lg transition-colors">
+                    <div >
+                        Laporan
+                    </div>
+                </a>
             </nav>
         </aside>
 
@@ -38,4 +44,5 @@
     </div>
 
 </body>
+
 </html>

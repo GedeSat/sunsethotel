@@ -86,6 +86,6 @@
 
     <!-- Copyright -->
     <p class="text-center text-gray-500 text-xs">
-        © 2025 Sunset Hotel & Resort. All rights reserved.
+        &copy; <?= date('Y'); ?>  Sunset Hotel & Resort. All rights reserved.
     </p>
 </footer>
